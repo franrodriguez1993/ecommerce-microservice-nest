@@ -27,6 +27,12 @@ export class ProductsController {
     return null;
   }
 
+
+  @MessagePattern({ cmd: 'list_products' })
+  async listProducts(offset:number,limit:number) {
+    return await this.productsService.listProducts(offset, limit);
+  }
+
   @MessagePattern({ cmd: 'update_by_id_product' })
   async updateByIdProduct(body: {
     id: string;

@@ -8,6 +8,8 @@ import { RequestCreateOrder } from '../../dto/RequestCreateOrder.dto';
 import { OrderProductsDto } from '../../dto/OrderProducts.dto';
 import { ResponseProductDto } from '../../dto/ResponseProduct.dto';
 import { CartProduct } from '../../dto/CartProduct.dto';
+import { ResponseOrderProductDto } from '../../dto/ResponseOrderProduct.dto';
+import { ResponseOrderDto } from '../../dto/ResponseOrder.dto';
 
 @Injectable()
 export class OrdersService {
@@ -19,9 +21,7 @@ export class OrdersService {
     private readonly providerService: ProviderService,
   ) {}
 
-  async createOrder(
-    dto: RequestCreateOrder,
-  ): Promise<{ order: Orders; orderProducts: CartProduct[] }> {
+  async createOrder(dto: RequestCreateOrder): Promise<Orders> {
     /* check user */
     const user = await this.providerService.getUserById(dto.userId);
     if (!user) throw new NotFoundException('User not found');
@@ -40,29 +40,67 @@ export class OrdersService {
       order,
       availableProducts,
     );
-
-    return { order, orderProducts };
+    order.products = orderProducts;
+    return order;
   }
 
   async createOrderProducts(
     order: Orders,
     products: CartProduct[],
-  ): Promise<CartProduct[]> {
+  ): Promise<OrdersProduct[]> {
+    const orderProducts: OrdersProduct[] = [];
     for await (const p of products) {
       const op = this.orderProductsRepository.create({
         quantity: p.quantity,
         productId: p.product._id,
+        name: p.product.name,
+        price: p.product.price,
         order,
       });
       await this.orderProductsRepository.save(op);
+      delete op.order;
+      orderProducts.push(op);
     }
 
-    return products;
+    return orderProducts;
   }
+
+  async getOrderById(orderId: number): Promise<ResponseOrderDto> {
+    return await this.ordersRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.products', 'orderProducts')
+      .where('order.id = :orderId', { orderId })
+      .getOne();
+  }
+
+  async getUserOrders(
+    userId: number,
+    offset: number = 0,
+    limit: number = 10,
+  ): Promise<{ total: number; orders: ResponseOrderDto[] }> {
+    /* Count total orders */
+    const total = await this.ordersRepository
+      .createQueryBuilder('order')
+      .where('order.userId = :userId', { userId })
+      .getCount();
+
+    const orders = await this.ordersRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.products', 'orderProducts')
+      .where('order.userId = :userId', { userId })
+      .orderBy('order.created_at', 'DESC')
+      .skip(offset)
+      .take(limit)
+      .getMany();
+
+    return { orders, total };
+  }
+
+  /* TOOLS */
 
   // check for available products and get total.
   // return: total for orders and the complete list of available products for the order ignoring unavailable products
-  async checkProductsAndGetTotal(
+  private async checkProductsAndGetTotal(
     products: OrderProductsDto[],
   ): Promise<{ total: number; availableProducts: CartProduct[] }> {
     let total = 0;

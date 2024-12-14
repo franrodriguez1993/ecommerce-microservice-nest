@@ -12,4 +12,16 @@ export class OrdersService {
   async createOrder(dto: RequestCreateOrder) {
     return await firstValueFrom(this.client.send({ cmd: 'create_order' }, dto));
   }
+
+  async getById(id: number) {
+    return await firstValueFrom(
+      this.client.send({ cmd: 'get_by_id_order' }, id),
+    );
+  }
+
+  async getUserOrders(userId: number, offset: number, limit: number) {
+    return await firstValueFrom(
+      this.client.send({ cmd: 'get_user_orders' }, { userId, offset, limit }),
+    );
+  }
 }

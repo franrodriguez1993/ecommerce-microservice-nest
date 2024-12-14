@@ -5,13 +5,15 @@ import {
   Get,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/CreateProduct.dto';
 import { ResponseProductDto } from './dto/ResponseProduct.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UpdateProductDto } from './dto/UpdateProduct.dto';
 
 @Controller('products')
@@ -28,6 +30,36 @@ export class ProductsController {
     const product = await this.productsService.create(createProductDto);
     return { statusCode: HttpStatus.OK, result: { product } };
   }
+
+
+  @Get()
+  @ApiOperation({ description: 'List products' })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Number of items to return',
+  })
+  @ApiQuery({
+    name: 'offset',
+    required: false,
+    type: Number,
+    description: 'Offset for pagination',
+  })
+  
+  async listProducts(
+    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
+    @Query('offset', new ParseIntPipe({ optional: true })) offset?: number,):
+    Promise<{
+    statusCode: HttpStatus;
+    result: { total:number,products:ResponseProductDto[] };
+  }> {
+    const result = await this.productsService.listProducts(offset,limit);
+
+    return { statusCode: HttpStatus.OK, result };
+  }
+
+
 
   @Get(':id')
   @ApiOperation({ description: 'Get product by id' })

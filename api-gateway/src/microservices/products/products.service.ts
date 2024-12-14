@@ -22,6 +22,10 @@ export class ProductsService {
     return firstValueFrom(this.client.send({ cmd: 'find_by_id_product' }, id));
   }
 
+  async listProducts(offset: number,limit:number) {
+    return firstValueFrom(this.client.send({ cmd: 'list_products' }, {offset,limit}));
+  }
+
   async updateById(id: string, data: UpdateProductDto) {
     return firstValueFrom(
       this.client.send({ cmd: 'update_by_id_product' }, { id, data }),

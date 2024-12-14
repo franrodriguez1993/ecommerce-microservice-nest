@@ -19,6 +19,19 @@ export class ProductsService {
     return await this.productModel.findOne({ _id: id });
   }
 
+  async listProducts(offset: number = 0, limit: number = 50) {
+    
+    const [products, total] = await Promise.all([
+    this.productModel.find({})
+      .skip(offset)
+      .limit(limit)
+      .sort({ createdAt: -1 }),
+    this.productModel.countDocuments({})
+    ]);
+    
+    return { products, total };
+  }
+
   async updateProduct(id: string, data: UpdateProductDto) {
     return await this.productModel.findByIdAndUpdate(id, data, { new: true });
   }

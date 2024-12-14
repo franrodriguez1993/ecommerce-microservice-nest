@@ -23,6 +23,12 @@ export class OrdersProduct {
   @Column({ default: null, length: 100 })
   productId: string;
 
+  @Column({ default: null, length: 255 })
+  name: string;
+
+  @Column({ default: 1 })
+  price: number;
+
   @Column({ default: 1 })
   quantity: number;
 
