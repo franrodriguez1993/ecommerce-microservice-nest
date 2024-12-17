@@ -56,4 +56,5 @@ export class UsersController {
     const message = await this.usersService.deleteById(id);
     return { statusCode: HttpStatus.OK, result: { message } };
   }
+
 }

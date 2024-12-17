@@ -31,7 +31,6 @@ export class ProductsController {
     return { statusCode: HttpStatus.OK, result: { product } };
   }
 
-
   @Get()
   @ApiOperation({ description: 'List products' })
   @ApiQuery({
@@ -46,20 +45,17 @@ export class ProductsController {
     type: Number,
     description: 'Offset for pagination',
   })
-  
   async listProducts(
     @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
-    @Query('offset', new ParseIntPipe({ optional: true })) offset?: number,):
-    Promise<{
+    @Query('offset', new ParseIntPipe({ optional: true })) offset?: number,
+  ): Promise<{
     statusCode: HttpStatus;
-    result: { total:number,products:ResponseProductDto[] };
+    result: { total: number; products: ResponseProductDto[] };
   }> {
-    const result = await this.productsService.listProducts(offset,limit);
+    const result = await this.productsService.listProducts(offset, limit);
 
     return { statusCode: HttpStatus.OK, result };
   }
-
-
 
   @Get(':id')
   @ApiOperation({ description: 'Get product by id' })
