@@ -1,16 +1,23 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientKafka, ClientProxy } from '@nestjs/microservices';
 import { RequestCreateOrder } from './dto/RequestCreateOrder.dto';
 import { firstValueFrom } from 'rxjs';
+import { OrderKafka } from './dto/OrderKafka.dto';
+import { OrderAction } from './enum/order-action.enum';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @Inject('ORDERS_MICROSERVICE') private readonly client: ClientProxy,
+    @Inject('ORDER_LOG_SERVICE') private readonly kafkaClient:ClientKafka
   ) {}
 
   async createOrder(dto: RequestCreateOrder) {
-    return await firstValueFrom(this.client.send({ cmd: 'create_order' }, dto));
+    const order = await firstValueFrom(this.client.send({ cmd: 'create_order' }, dto));
+    if (order) {
+      this.kafkaMessage({ action: OrderAction.CREATED, orderId: order.id,userId:order.userId });
+    }
+    return order;
   }
 
   async getById(id: number) {
@@ -23,5 +30,9 @@ export class OrdersService {
     return await firstValueFrom(
       this.client.send({ cmd: 'get_user_orders' }, { userId, offset, limit }),
     );
+  }
+
+  private kafkaMessage(data:OrderKafka) {
+    this.kafkaClient.emit("order_action", data);
   }
 }
