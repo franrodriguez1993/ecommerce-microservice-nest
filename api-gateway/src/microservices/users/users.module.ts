@@ -9,7 +9,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
      ClientsModule.register([
       {
         name: 'USER_LOG_SERVICE',
-        transport: Transport.KAFKA,
+         transport: Transport.KAFKA,
         options: {
           client: {
             clientId: 'users',
@@ -18,6 +18,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           consumer: {
             groupId: 'users-consumer',
           },
+          producer:{idempotent:true,}
         },
       },
     ]),
