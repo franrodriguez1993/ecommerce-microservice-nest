@@ -3,8 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { LogUsers } from './entities/log-users.entity';
+import { LogOrders } from './entities/log-order.entity';
 
-const ENTITIES = [LogUsers];
+const ENTITIES = [LogUsers,LogOrders];
 @Module({
   imports: [
     ConfigModule.forRoot(),
