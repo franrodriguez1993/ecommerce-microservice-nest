@@ -19,7 +19,7 @@ export class UsersController {
   }
 
   @MessagePattern({ cmd: 'login_user' })
-  async loginUser(data: RequestCreateUser): Promise<{user:UserDto,accessToken:string,refreshToken:string}> {
+  async loginUser(data: RequestCreateUser): Promise<UserDto> {
     return await this.userService.login(data);
   }
 

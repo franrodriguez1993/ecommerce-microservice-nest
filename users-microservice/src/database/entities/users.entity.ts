@@ -8,6 +8,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from 'typeorm';
+import { RoleUser } from '../../enum/RoleUser.enum';
 
 @Entity({
   name: 'users',
@@ -25,6 +26,15 @@ export class Users {
 
   @Column({ nullable: false, length: 155 })
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: RoleUser,
+    comment: 'User Role',
+    nullable: true,
+    default: RoleUser.USER,
+  })
+  role: RoleUser;
 
   @CreateDateColumn()
   created_at: Date;

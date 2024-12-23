@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { HashService } from './hash.service';
-import JWTService from './jwt.service';
 
-@Module({ providers: [HashService,JWTService] })
+@Module({ providers: [HashService,] })
 export class UtilsModule {}

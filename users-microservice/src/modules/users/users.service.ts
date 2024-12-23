@@ -6,12 +6,11 @@ import { Repository } from 'typeorm';
 import { RequestCreateUser } from './dto/RequestCreateUser.dto';
 import { ModuleRef } from '@nestjs/core';
 import { RequestLoginUser } from './dto/RequestLoginUser.dto';
-import JWTService from '../../utils/jwt.service';
+
 
 @Injectable()
 export class UserService {
   private hashService: HashService;
-  private jwtService: JWTService;
   constructor(
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
@@ -20,7 +19,6 @@ export class UserService {
 
   onModuleInit() {
     this.hashService = this.moduleRef.get(HashService, { strict: false });
-    this.jwtService = this.moduleRef.get(JWTService, { strict: false });
   }
   async register(createUserDto: RequestCreateUser) {
     const newPassword = await this.hashService.encrypt(createUserDto.password);
@@ -41,9 +39,7 @@ export class UserService {
     if (!isValidPassword) return null;
 
     delete user.password;
-    const accessToken = this.jwtService.createJWT(user.id.toString());
-    const refreshToken = this.jwtService.createRefreshJWT(user.id.toString());
-    return { user, accessToken, refreshToken };
+    return user;
   }
 
   findAll() {
