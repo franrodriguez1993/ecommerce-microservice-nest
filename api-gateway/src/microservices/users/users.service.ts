@@ -4,6 +4,7 @@ import { RequestCreateUser } from './dto/RequestCreateUser.dto';
 import { firstValueFrom } from 'rxjs';
 import { KafkaUserMessage } from './dto/kafka-user.dto';
 import { UserActions } from './enum/user-actions.enum';
+import { RequestLoginUser } from './dto/RequestLoginUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +25,20 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async login(createUserDto: RequestLoginUser) {
+    // login user
+    const data = await firstValueFrom(
+      this.client.send({ cmd: 'login_user' }, createUserDto),
+    );
+    
+    // kafka action logs
+    // if (user) {
+    //   this.kafkaMessage({ action: UserActions.REGISTERED, userId: user.id });
+    // }
+
+    return data;
   }
 
   async listAll() {

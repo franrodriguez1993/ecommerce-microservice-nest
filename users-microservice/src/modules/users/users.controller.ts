@@ -15,7 +15,12 @@ export class UsersController {
 
   @MessagePattern({ cmd: 'register_user' })
   async registerUser(data: RequestCreateUser): Promise<UserDto> {
-    return await this.userService.create(data);
+    return await this.userService.register(data);
+  }
+
+  @MessagePattern({ cmd: 'login_user' })
+  async loginUser(data: RequestCreateUser): Promise<{user:UserDto,accessToken:string,refreshToken:string}> {
+    return await this.userService.login(data);
   }
 
   @MessagePattern({ cmd: 'get_by_id_user' })

@@ -5,10 +5,13 @@ import { Users } from '../../database/entities/users.entity';
 import { Repository } from 'typeorm';
 import { RequestCreateUser } from './dto/RequestCreateUser.dto';
 import { ModuleRef } from '@nestjs/core';
+import { RequestLoginUser } from './dto/RequestLoginUser.dto';
+import JWTService from '../../utils/jwt.service';
 
 @Injectable()
 export class UserService {
   private hashService: HashService;
+  private jwtService: JWTService;
   constructor(
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
@@ -17,8 +20,9 @@ export class UserService {
 
   onModuleInit() {
     this.hashService = this.moduleRef.get(HashService, { strict: false });
+    this.jwtService = this.moduleRef.get(JWTService, { strict: false });
   }
-  async create(createUserDto: RequestCreateUser) {
+  async register(createUserDto: RequestCreateUser) {
     const newPassword = await this.hashService.encrypt(createUserDto.password);
     const user = this.userRepository.create({
       username: createUserDto.username,
@@ -27,6 +31,19 @@ export class UserService {
     });
 
     return await this.userRepository.save(user);
+  }
+
+  async login(requestLoginUser:RequestLoginUser) {
+    const user = await this.userRepository.findOne({ where: { username: requestLoginUser.username } });
+    if (!user) return null;
+
+    const isValidPassword = await this.hashService.compare(requestLoginUser.password, user.password);
+    if (!isValidPassword) return null;
+
+    delete user.password;
+    const accessToken = this.jwtService.createJWT(user.id.toString());
+    const refreshToken = this.jwtService.createRefreshJWT(user.id.toString());
+    return { user, accessToken, refreshToken };
   }
 
   findAll() {
@@ -38,6 +55,10 @@ export class UserService {
 
   findById(id: number) {
     return this.userRepository.findOne({ where: { id } });
+  }
+
+  findByUsername(username: string) { 
+    return this.userRepository.findOne({ where: { username } });
   }
 
   async remove(id: number) {
