@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class ResponseProductDto {
+export class ResProductDto {
   @IsString()
   @IsNotEmpty()
   _id: string;

@@ -1,4 +1,4 @@
-export class ResponseOrderProductDto {
+export class ResOrderProductDto {
   id: number;
 
   productId: string;

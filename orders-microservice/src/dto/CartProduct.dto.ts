@@ -1,6 +1,6 @@
-import { ResponseProductDto } from './ResponseProduct.dto';
+import { ResProductDto } from './ResProduct.dto';
 
 export class CartProduct {
-  product: ResponseProductDto;
+  product: ResProductDto;
   quantity: number;
 }

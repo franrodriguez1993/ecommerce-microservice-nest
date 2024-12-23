@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { RequestCreateProduct } from './dto/RequestCreateProduct.dto';
+import { ReqCreateProductDto } from './dto/ReqCreateProduct.dto';
 import { ProductsService } from './products.service';
-import { ResponseProductDto } from './dto/ResponseProduct.dto';
-import { UpdateProductDto } from './dto/UpdateProduct.dto';
+import { ResProductDto } from './dto/ResProduct.dto';
+import { ReqUpdateProductDto } from './dto/ReqUpdateProduct.dto';
 
 @Controller()
 export class ProductsController {
@@ -11,14 +11,14 @@ export class ProductsController {
 
   @MessagePattern({ cmd: 'create_product' })
   async createProduct(
-    createProductDto: RequestCreateProduct,
-  ): Promise<ResponseProductDto> {
+    createProductDto: ReqCreateProductDto,
+  ): Promise<ResProductDto> {
     const product = await this.productsService.create(createProductDto);
     return { ...product.toObject(), _id: product._id.toString() };
   }
 
   @MessagePattern({ cmd: 'find_by_id_product' })
-  async findById(id: string): Promise<ResponseProductDto | null> {
+  async findById(id: string): Promise<ResProductDto | null> {
     const product = await this.productsService.getById(id);
 
     if (product) {
@@ -36,8 +36,8 @@ export class ProductsController {
   @MessagePattern({ cmd: 'update_by_id_product' })
   async updateByIdProduct(body: {
     id: string;
-    data: UpdateProductDto;
-  }): Promise<ResponseProductDto | null> {
+    data: ReqUpdateProductDto;
+  }): Promise<ResProductDto | null> {
     const product = await this.productsService.updateProduct(
       body.id,
       body.data,

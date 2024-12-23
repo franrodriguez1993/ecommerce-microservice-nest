@@ -2,7 +2,8 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { UserService } from './users.service';
 import { UserDto } from './dto/User.dto';
-import { RequestCreateUser } from './dto/RequestCreateUser.dto';
+import { ReqCreateUserDto } from './dto/ReqCreateUser.dto';
+import { ReqLoginUserDto } from './dto/ReqLoginUser.dto';
 
 @Controller()
 export class UsersController {
@@ -14,12 +15,12 @@ export class UsersController {
   }
 
   @MessagePattern({ cmd: 'register_user' })
-  async registerUser(data: RequestCreateUser): Promise<UserDto> {
+  async registerUser(data: ReqCreateUserDto): Promise<UserDto> {
     return await this.userService.register(data);
   }
 
   @MessagePattern({ cmd: 'login_user' })
-  async loginUser(data: RequestCreateUser): Promise<UserDto> {
+  async loginUser(data: ReqLoginUserDto): Promise<UserDto> {
     return await this.userService.login(data);
   }
 

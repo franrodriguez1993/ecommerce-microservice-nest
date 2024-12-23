@@ -1,7 +1,7 @@
 import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
 import { OrderProductsDto } from './OrderProducts.dto';
 
-export class RequestCreateOrder {
+export class ReqCreateOrderDto {
   @IsArray()
   products: OrderProductsDto[];
 

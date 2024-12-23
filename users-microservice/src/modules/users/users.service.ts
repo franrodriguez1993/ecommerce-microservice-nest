@@ -3,9 +3,9 @@ import { HashService } from '../../utils/hash.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from '../../database/entities/users.entity';
 import { Repository } from 'typeorm';
-import { RequestCreateUser } from './dto/RequestCreateUser.dto';
+import { ReqCreateUserDto } from './dto/ReqCreateUser.dto';
 import { ModuleRef } from '@nestjs/core';
-import { RequestLoginUser } from './dto/RequestLoginUser.dto';
+import { ReqLoginUserDto } from './dto/ReqLoginUser.dto';
 
 
 @Injectable()
@@ -20,7 +20,7 @@ export class UserService {
   onModuleInit() {
     this.hashService = this.moduleRef.get(HashService, { strict: false });
   }
-  async register(createUserDto: RequestCreateUser) {
+  async register(createUserDto: ReqCreateUserDto) {
     const newPassword = await this.hashService.encrypt(createUserDto.password);
     const user = this.userRepository.create({
       username: createUserDto.username,
@@ -31,7 +31,7 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async login(requestLoginUser:RequestLoginUser) {
+  async login(requestLoginUser:ReqLoginUserDto) {
     const user = await this.userRepository.findOne({ where: { username: requestLoginUser.username } });
     if (!user) return null;
 

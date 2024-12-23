@@ -4,12 +4,11 @@ import { Repository } from 'typeorm';
 import { Orders } from '../../database/entities/orders.entity';
 import { OrdersProduct } from '../../database/entities/orders-product.entity';
 import { ProviderService } from './provider.service';
-import { RequestCreateOrder } from '../../dto/RequestCreateOrder.dto';
+import { ReqCreateOrderDto } from '../../dto/ReqCreateOrder.dto';
 import { OrderProductsDto } from '../../dto/OrderProducts.dto';
-import { ResponseProductDto } from '../../dto/ResponseProduct.dto';
+import { ResProductDto } from '../../dto/ResProduct.dto';
 import { CartProduct } from '../../dto/CartProduct.dto';
-import { ResponseOrderProductDto } from '../../dto/ResponseOrderProduct.dto';
-import { ResponseOrderDto } from '../../dto/ResponseOrder.dto';
+import { ResOrderDto } from '../../dto/ResOrder.dto';
 
 @Injectable()
 export class OrdersService {
@@ -21,7 +20,7 @@ export class OrdersService {
     private readonly providerService: ProviderService,
   ) {}
 
-  async createOrder(dto: RequestCreateOrder): Promise<Orders> {
+  async createOrder(dto: ReqCreateOrderDto): Promise<Orders> {
     /* check user */
     const user = await this.providerService.getUserById(dto.userId);
     if (!user) throw new NotFoundException('User not found');
@@ -65,7 +64,7 @@ export class OrdersService {
     return orderProducts;
   }
 
-  async getOrderById(orderId: number): Promise<ResponseOrderDto> {
+  async getOrderById(orderId: number): Promise<ResOrderDto> {
     return await this.ordersRepository
       .createQueryBuilder('order')
       .leftJoinAndSelect('order.products', 'orderProducts')
@@ -77,7 +76,7 @@ export class OrdersService {
     userId: number,
     offset: number = 0,
     limit: number = 10,
-  ): Promise<{ total: number; orders: ResponseOrderDto[] }> {
+  ): Promise<{ total: number; orders: ResOrderDto[] }> {
     /* Count total orders */
     const total = await this.ordersRepository
       .createQueryBuilder('order')
@@ -107,7 +106,7 @@ export class OrdersService {
     const availableProducts: CartProduct[] = [];
 
     for await (const p of products) {
-      const product: ResponseProductDto =
+      const product: ResProductDto =
         await this.providerService.getProductById(p.productId);
       if (product) {
         total += product.price * p.quantity;
