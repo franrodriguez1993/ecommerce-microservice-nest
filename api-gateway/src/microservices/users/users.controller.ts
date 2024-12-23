@@ -6,12 +6,14 @@ import {
   HttpStatus,
   Param,
   Post,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { RequestCreateUser } from './dto/RequestCreateUser.dto';
 import { UserDto } from './dto/User.dto';
 import { RequestLoginUser } from './dto/RequestLoginUser.dto';
+import { AuthenticationGuard } from '../../shared/guard/authorization.guard';
 
 @Controller('users')
 @ApiTags('users')
@@ -32,13 +34,15 @@ export class UsersController {
   @ApiOperation({ description: 'Login user and get access and refresh token' })
   async login(
     @Body() body: RequestLoginUser,
-  ): Promise<{ statusCode: HttpStatus; result: { user: UserDto, acessToken:string, refreshToken:string } }> {
+  ): Promise<{ statusCode: HttpStatus; result: { user: UserDto, accessToken:string, refreshToken:string } }> {
     const result = await this.usersService.login(body);
 
     return { statusCode: HttpStatus.OK, result };
   }
 
   @Get('')
+  @UseGuards(AuthenticationGuard)
+  @ApiBearerAuth()
   @ApiOperation({ description: 'List all users' })
   async listUsers(): Promise<{
     statusCode: HttpStatus;

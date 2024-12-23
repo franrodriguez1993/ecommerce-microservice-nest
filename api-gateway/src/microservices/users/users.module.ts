@@ -3,9 +3,11 @@ import { UsersMicroserviceProvider } from './users.provider';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { SharedModule } from '../../shared/services/shared.module';
 
 @Module({
   imports: [
+    SharedModule,
      ClientsModule.register([
       {
         name: 'USER_LOG_SERVICE',

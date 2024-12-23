@@ -3,13 +3,14 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductModule } from './microservices/products/products.module';
 import { UsersModule } from './microservices/users/users.module';
 import { OrdersModule } from './microservices/orders/orders.module';
+import { SharedModule } from './shared/services/shared.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     ProductModule,
     UsersModule,
     OrdersModule,
-    
+    SharedModule
   ],
   controllers: [],
   providers: [],
