@@ -1,18 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka, ClientProxy } from '@nestjs/microservices';
-import { RequestCreateUser } from './dto/RequestCreateUser.dto';
+import { ReqCreateUserDto } from './dto/ReqCreateUser.dto';
 import { firstValueFrom } from 'rxjs';
 import { KafkaUserMessage } from './dto/kafka-user.dto';
 import { UserActions } from './enum/user-actions.enum';
-import { RequestLoginUser } from './dto/RequestLoginUser.dto';
+import { ReqLoginUserDto } from './dto/ReqLoginUser.dto';
 import JWTService from '../../shared/services/jwt.service';
 import { ModuleRef } from '@nestjs/core';
-import { HashService } from '../../shared/services/hash.service';
 
 @Injectable()
 export class UsersService {
   private jwtService: JWTService;
-  private hashService: HashService;
 
   constructor(
     @Inject('USERS_MICROSERVICE') private readonly client: ClientProxy,
@@ -22,10 +20,9 @@ export class UsersService {
 
   onModuleInit() {
     this.jwtService = this.moduleRef.get(JWTService, { strict: false });
-    this.hashService = this.moduleRef.get(HashService, { strict: false });
   }
   
-  async register(createUserDto: RequestCreateUser) {
+  async register(createUserDto: ReqCreateUserDto) {
     // register user
     const user = await firstValueFrom(
       this.client.send({ cmd: 'register_user' }, createUserDto),
@@ -39,7 +36,7 @@ export class UsersService {
     return user;
   }
 
-  async login(createUserDto: RequestLoginUser) {
+  async login(createUserDto: ReqLoginUserDto) {
     // login user
     const user = await firstValueFrom(
       this.client.send({ cmd: 'login_user' }, createUserDto),
@@ -47,11 +44,8 @@ export class UsersService {
 
     if (!user) return null;
 
-    // hash role for jwt:
-    const hashedRole = await this.hashService.encrypt(user.role);
-
     // generate access & refresh token
-    const accessToken = this.jwtService.createJWT(user.id,hashedRole);
+    const accessToken = this.jwtService.createJWT(user.id,user.role);
     const refreshToken = this.jwtService.createRefreshJWT(user.id);
     
     // kafka action logs

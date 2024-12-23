@@ -1,19 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateProductDto {
+export class ReqCreateUserDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  name: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  @ApiProperty()
-  price: number;
+  username: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  category: string;
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  password: string;
 }

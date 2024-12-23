@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Inject } from '@nestjs/common';
-import { CreateProductDto } from './dto/CreateProduct.dto';
+import { ReqCreateProductDto } from './dto/ReqCreateProduct.dto';
 import { firstValueFrom } from 'rxjs';
 import { UpdateProductDto } from './dto/UpdateProduct.dto';
 
@@ -11,7 +11,7 @@ export class ProductsService {
     @Inject('PRODUCTS_MICROSERVICE') private readonly client: ClientProxy,
   ) {}
 
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: ReqCreateProductDto) {
     // Envía los datos al microservicio de productos
     return firstValueFrom(
       this.client.send({ cmd: 'create_product' }, createProductDto),

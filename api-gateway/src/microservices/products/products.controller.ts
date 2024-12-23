@@ -11,8 +11,8 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/CreateProduct.dto';
-import { ResponseProductDto } from './dto/ResponseProduct.dto';
+import { ReqCreateProductDto } from './dto/ReqCreateProduct.dto';
+import { ResProductDto } from './dto/ResProduct.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { UpdateProductDto } from './dto/UpdateProduct.dto';
 
@@ -23,9 +23,9 @@ export class ProductsController {
 
   @Post()
   @ApiOperation({ description: 'Create New Product' })
-  async createProduct(@Body() createProductDto: CreateProductDto): Promise<{
+  async createProduct(@Body() createProductDto: ReqCreateProductDto): Promise<{
     statusCode: HttpStatus;
-    result: { product: ResponseProductDto };
+    result: { product: ResProductDto };
   }> {
     const product = await this.productsService.create(createProductDto);
     return { statusCode: HttpStatus.OK, result: { product } };
@@ -50,7 +50,7 @@ export class ProductsController {
     @Query('offset', new ParseIntPipe({ optional: true })) offset?: number,
   ): Promise<{
     statusCode: HttpStatus;
-    result: { total: number; products: ResponseProductDto[] };
+    result: { total: number; products: ResProductDto[] };
   }> {
     const result = await this.productsService.listProducts(offset, limit);
 
@@ -61,7 +61,7 @@ export class ProductsController {
   @ApiOperation({ description: 'Get product by id' })
   async getById(@Param('id') id: string): Promise<{
     statusCode: HttpStatus;
-    result: { product: ResponseProductDto };
+    result: { product: ResProductDto };
   }> {
     const product = await this.productsService.getById(id);
 
@@ -75,7 +75,7 @@ export class ProductsController {
     @Body() body: UpdateProductDto,
   ): Promise<{
     statusCode: HttpStatus;
-    result: { product: ResponseProductDto };
+    result: { product: ResProductDto };
   }> {
     const product = await this.productsService.updateById(id, body);
 
