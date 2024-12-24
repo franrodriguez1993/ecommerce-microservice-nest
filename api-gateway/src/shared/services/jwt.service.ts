@@ -5,14 +5,17 @@ import {
   TokenExpiredError,
   verify,
 } from 'jsonwebtoken';
-import { JWTInterface, JWTPayloadInterface } from '../interface/jwt-payload.interface';
+import {
+  JWTInterface,
+  JWTPayloadInterface,
+} from '../interface/jwt-payload.interface';
 
 @Injectable()
 export default class JWTService {
-  createJWT(userId: string, role:string) {
+  createJWT(userId: string, role: string) {
     return sign(
       {
-        data: { id: userId,role },
+        data: { id: userId, role },
       },
       process.env.JWT_SECRET,
       { expiresIn: '5m' },

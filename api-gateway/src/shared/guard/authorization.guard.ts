@@ -28,7 +28,7 @@ export class AuthenticationGuard implements CanActivate {
       const payload = this.jwtService.decodeJWT(jwt, 'access');
       if (payload.invalid) {
         throw new UnauthorizedException('Unauthorized');
-      }  else {
+      } else {
         request.userId = payload.info.data.id;
       }
 
@@ -37,6 +37,4 @@ export class AuthenticationGuard implements CanActivate {
       console.log(error);
     }
   }
-
- 
 }

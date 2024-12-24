@@ -4,6 +4,8 @@ import { UserService } from './users.service';
 import { UserDto } from './dto/User.dto';
 import { ReqCreateUserDto } from './dto/ReqCreateUser.dto';
 import { ReqLoginUserDto } from './dto/ReqLoginUser.dto';
+import { ReqCreateAddressDto } from './dto/ReqCreateAddress.dto';
+import { AddressDto } from './dto/Address.dto';
 
 @Controller()
 export class UsersController {
@@ -41,5 +43,24 @@ export class UsersController {
       return 'User deleted';
     }
     return 'User not deleted';
+  }
+
+  @MessagePattern({ cmd: 'create_address' })
+  async createAddress(data: ReqCreateAddressDto): Promise<AddressDto> {
+    return await this.userService.createAddress(data);
+  }
+
+  @MessagePattern({ cmd: 'get_addresses_by_user_id' })
+  async getAddressByUserId(id: number): Promise<AddressDto[]> {
+    return await this.userService.getAddressesByUserId(id);
+  }
+
+  @MessagePattern({ cmd: 'delete_address_by_id' })
+  async deleteAddressById(id: number): Promise<string> {
+    const result = await this.userService.deleteAddressById(id);
+    if (result) {
+      return 'Address deleted';
+    }
+    return 'Address not deleted';
   }
 }

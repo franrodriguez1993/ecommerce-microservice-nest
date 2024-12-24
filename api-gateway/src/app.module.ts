@@ -10,7 +10,7 @@ import { SharedModule } from './shared/services/shared.module';
     ProductModule,
     UsersModule,
     OrdersModule,
-    SharedModule
+    SharedModule,
   ],
   controllers: [],
   providers: [],

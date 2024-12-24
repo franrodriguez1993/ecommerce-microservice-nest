@@ -8,10 +8,10 @@ import { SharedModule } from '../../shared/services/shared.module';
 @Module({
   imports: [
     SharedModule,
-     ClientsModule.register([
+    ClientsModule.register([
       {
         name: 'USER_LOG_SERVICE',
-         transport: Transport.KAFKA,
+        transport: Transport.KAFKA,
         options: {
           client: {
             clientId: 'users',
@@ -20,7 +20,7 @@ import { SharedModule } from '../../shared/services/shared.module';
           consumer: {
             groupId: 'users-consumer',
           },
-          producer:{idempotent:true,}
+          producer: { idempotent: true },
         },
       },
     ]),

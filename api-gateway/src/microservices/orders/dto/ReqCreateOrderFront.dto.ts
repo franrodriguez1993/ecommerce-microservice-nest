@@ -18,5 +18,4 @@ export class ReqCreateOrderFrontDto {
   @ValidateNested({ each: true })
   @Type(() => OrderProductsDto)
   products: OrderProductsDto[];
-
 }

@@ -9,13 +9,19 @@ import { OrderAction } from './enum/order-action.enum';
 export class OrdersService {
   constructor(
     @Inject('ORDERS_MICROSERVICE') private readonly client: ClientProxy,
-    @Inject('ORDER_LOG_SERVICE') private readonly kafkaClient:ClientKafka
+    @Inject('ORDER_LOG_SERVICE') private readonly kafkaClient: ClientKafka,
   ) {}
 
   async createOrder(dto: ReqCreateOrderDto) {
-    const order = await firstValueFrom(this.client.send({ cmd: 'create_order' }, dto));
+    const order = await firstValueFrom(
+      this.client.send({ cmd: 'create_order' }, dto),
+    );
     if (order) {
-      this.kafkaMessage({ action: OrderAction.CREATED, orderId: order.id,userId:order.userId });
+      this.kafkaMessage({
+        action: OrderAction.CREATED,
+        orderId: order.id,
+        userId: order.userId,
+      });
     }
     return order;
   }
@@ -32,7 +38,7 @@ export class OrdersService {
     );
   }
 
-  private kafkaMessage(data:OrderKafka) {
-    this.kafkaClient.emit("order_action", data);
+  private kafkaMessage(data: OrderKafka) {
+    this.kafkaClient.emit('order_action', data);
   }
 }

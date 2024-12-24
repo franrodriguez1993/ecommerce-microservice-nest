@@ -7,36 +7,33 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   BeforeUpdate,
-  OneToMany,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
-import { RoleUser } from '../../enum/RoleUser.enum';
-import { Addresses } from './address.entity';
+import { Users } from './users.entity';
 
 @Entity({
-  name: 'users',
+  name: 'addresses',
   synchronize: true,
 })
-export class Users {
+export class Addresses {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ default: null, length: 100 })
-  username: string;
+  @Column({ length: 155 })
+  city: string;
 
-  @Column({ nullable: false, length: 155 })
-  email: string;
+  @Column({ length: 155 })
+  street_name: string;
 
-  @Column({ nullable: false, length: 155 })
-  password: string;
+  @Column({ default: 0 })
+  street_number: number;
 
-  @Column({
-    type: 'enum',
-    enum: RoleUser,
-    comment: 'User Role',
-    nullable: true,
-    default: RoleUser.USER,
-  })
-  role: RoleUser;
+  @Column({ length: 155 })
+  floor: string;
+
+  @Column({ length: 155 })
+  apartment: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -45,8 +42,13 @@ export class Users {
   updated_at: Date;
 
   // ******************** Relations ********************
-  @OneToMany(() => Addresses, (address) => address.user)
-  addresses: Addresses[];
+
+  @ManyToOne(() => Users, (user) => user.addresses)
+  @JoinColumn({
+    name: 'user_id',
+    foreignKeyConstraintName: 'user_address_fk',
+  })
+  user: Users;
 
   // ******************** Functions ********************
 

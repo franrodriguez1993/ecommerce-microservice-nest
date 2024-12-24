@@ -7,20 +7,21 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 @Module({
   imports: [
     ClientsModule.register([
-        {
-          name: 'ORDER_LOG_SERVICE',
-          transport: Transport.KAFKA,
-          options: {
-            client: {
-              clientId: 'orders',
-              brokers: ['localhost:9093'],
-            },
-            consumer: {
-              groupId: 'orders-consumer',
-            },
+      {
+        name: 'ORDER_LOG_SERVICE',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'orders',
+            brokers: ['localhost:9093'],
+          },
+          consumer: {
+            groupId: 'orders-consumer',
           },
         },
-      ]),],
+      },
+    ]),
+  ],
   providers: [OrdersMicroserviceProvider, OrdersService],
   controllers: [OrderController],
 })

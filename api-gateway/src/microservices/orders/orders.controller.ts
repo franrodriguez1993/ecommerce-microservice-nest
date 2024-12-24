@@ -9,7 +9,12 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { OrdersService } from './orders.service';
 import { ResOrderDto } from './dto/ResOrder.dto';
 import { AuthenticationGuard } from '../../shared/guard/authorization.guard';
@@ -27,15 +32,17 @@ export class OrderController {
   @ApiOperation({ description: 'Create a new order' })
   async createOrder(
     @Body() dto: ReqCreateOrderFrontDto,
-    @Req()req:RequestExt
+    @Req() req: RequestExt,
   ): Promise<{ statusCode: HttpStatus; result: ResOrderDto }> {
-
-    const order = await this.orderService.createOrder({...dto,userId:parseInt(req.userId)});
+    const order = await this.orderService.createOrder({
+      ...dto,
+      userId: parseInt(req.userId),
+    });
 
     return { statusCode: HttpStatus.CREATED, result: order };
   }
 
-   @Get('list')
+  @Get('list')
   @UseGuards(AuthenticationGuard)
   @ApiBearerAuth()
   @ApiQuery({
@@ -51,10 +58,9 @@ export class OrderController {
     description: 'Offset for pagination',
   })
   async getUserOrders(
-    @Req() req:RequestExt,
+    @Req() req: RequestExt,
     @Query('limit') limit?: number,
     @Query('offset') offset?: number,
-
   ): Promise<{
     statusCode: HttpStatus;
     result: { total: number; orders: ResOrderDto[] };
@@ -76,6 +82,4 @@ export class OrderController {
 
     return { statusCode: HttpStatus.OK, result: order };
   }
-
- 
 }

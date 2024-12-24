@@ -1,6 +1,6 @@
-import { OrderAction } from "../enum/order-action.enum";
+import { OrderAction } from '../enum/order-action.enum';
 
-export class OrderKafka{
+export class OrderKafka {
   action: OrderAction;
   orderId: number;
   userId: number;

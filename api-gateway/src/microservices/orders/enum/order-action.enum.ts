@@ -1,4 +1,4 @@
-export enum OrderAction{
+export enum OrderAction {
   CREATED = 'CREATED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
