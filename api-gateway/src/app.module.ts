@@ -4,6 +4,7 @@ import { ProductModule } from './microservices/products/products.module';
 import { UsersModule } from './microservices/users/users.module';
 import { OrdersModule } from './microservices/orders/orders.module';
 import { SharedModule } from './shared/services/shared.module';
+import { ShippingModule } from './microservices/shipping/shipping.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -11,6 +12,7 @@ import { SharedModule } from './shared/services/shared.module';
     UsersModule,
     OrdersModule,
     SharedModule,
+    ShippingModule
   ],
   controllers: [],
   providers: [],

@@ -3,6 +3,10 @@ export class UserDto {
 
   username: string;
 
+  name: string;
+
+  lastname: string;
+
   email: string;
 
   created_at: Date;

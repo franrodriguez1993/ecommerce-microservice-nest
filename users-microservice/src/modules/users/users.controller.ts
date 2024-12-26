@@ -51,9 +51,15 @@ export class UsersController {
   }
 
   @MessagePattern({ cmd: 'get_addresses_by_user_id' })
-  async getAddressByUserId(id: number): Promise<AddressDto[]> {
+  async getAddressesByUserId(id: number): Promise<AddressDto[]> {
     return await this.userService.getAddressesByUserId(id);
   }
+
+  @MessagePattern({ cmd: 'get_by_id_address' })
+  async getAddressByUserId(id: number): Promise<AddressDto> {
+    return await this.userService.getAddressByUserId(id);
+  }
+
 
   @MessagePattern({ cmd: 'delete_address_by_id' })
   async deleteAddressById(id: number): Promise<string> {

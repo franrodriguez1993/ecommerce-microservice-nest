@@ -7,6 +7,14 @@ export class ReqCreateUserDto {
 
   @IsString()
   @IsNotEmpty()
+  name: string;
+
+  @IsString()
+  @IsNotEmpty()
+  lastname: string;
+
+  @IsString()
+  @IsNotEmpty()
   email: string;
 
   @IsString()

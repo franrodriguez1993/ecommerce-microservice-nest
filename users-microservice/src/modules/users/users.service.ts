@@ -105,6 +105,18 @@ export class UserService {
       .getMany();
   }
 
+    async getAddressByUserId(id: number){
+    return this.addressRepository.createQueryBuilder('address')
+      .where('address.id = :id', { id })
+      .select(['address.id',
+        'address.city',
+        'address.street_name',
+        'address.street_number',
+        'address.floor',
+        'address.apartment'])
+      .getOne();
+  }
+
   async deleteAddressById(id: number){
     const address = await this.addressRepository.findOne({where:{id}});
     if (!address) return null;

@@ -10,6 +10,16 @@ export class ReqCreateUserDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
+  name: string;
+  
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  lastname: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
   email: string;
 
   @IsString()

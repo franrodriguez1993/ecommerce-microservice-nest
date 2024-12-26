@@ -7,42 +7,46 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   BeforeUpdate,
-  OneToMany,
 } from 'typeorm';
-import { RoleUser } from '../../enum/RoleUser.enum';
-import { Addresses } from './address.entity';
+import { ShippingStatus } from '../../enum/shipping-status.enum';
 
 @Entity({
-  name: 'users',
+  name: 'shippings',
   synchronize: true,
 })
-export class Users {
+export class Shippings {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column({ default: null, length: 100 })
-  username: string;
-
-  @Column({ default: null, length: 100 })
+  @Column({ nullable: false, length: 155 })
   name: string;
-  
-  @Column({ default: null, length: 100 })
+
+  @Column({ nullable: false, length: 155 })
   lastname: string;
 
   @Column({ nullable: false, length: 155 })
-  email: string;
+  address_street: string;
 
-  @Column({ nullable: false, length: 155 })
-  password: string;
+  @Column()
+  address_number: number;
+
+  @Column({ length: 155 })
+  city: string;
+
+  @Column({ length: 155 })
+  floor: string;
+
+  @Column({ length: 155 })
+  apartment: string;
 
   @Column({
     type: 'enum',
-    enum: RoleUser,
-    comment: 'User Role',
+    enum: ShippingStatus,
+    comment: 'Shipping Status',
     nullable: true,
-    default: RoleUser.USER,
+    default: ShippingStatus.PENDING,
   })
-  role: RoleUser;
+  status: ShippingStatus;
 
   @CreateDateColumn()
   created_at: Date;
@@ -50,9 +54,13 @@ export class Users {
   @UpdateDateColumn()
   updated_at: Date;
 
-  // ******************** Relations ********************
-  @OneToMany(() => Addresses, (address) => address.user)
-  addresses: Addresses[];
+  // ******************** Logic relations ********************
+
+  @Column({ nullable: false })
+  order_id: number;
+
+  @Column({ nullable: false })
+  user_id: number;
 
   // ******************** Functions ********************
 
