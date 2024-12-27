@@ -26,15 +26,20 @@ export class AuthenticationGuard implements CanActivate {
 
     try {
       const payload = this.jwtService.decodeJWT(jwt, 'access');
-      if (payload.invalid) {
-        throw new UnauthorizedException('Unauthorized');
-      } else {
-        request.userId = payload.info.data.id;
+
+      if (payload.invalid ) {
+        throw new UnauthorizedException('Invalid Token');
+      }
+      else if (payload.expired) {
+         throw new UnauthorizedException('Token Expired');
+      }
+      else {
+        request.userId = payload?.info.data.id;
       }
 
       return true;
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   }
 }

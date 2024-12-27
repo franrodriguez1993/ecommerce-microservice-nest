@@ -15,10 +15,17 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           client: {
             clientId: 'orders',
             brokers: ['localhost:9093'],
+          retry: {
+              retries: 5,
+              initialRetryTime: 30000,
+              factor: 1.5, 
+              multiplier: 1,
+        },
           },
           consumer: {
             groupId: 'orders-consumer',
           },
+          
         },
       },
     ]),

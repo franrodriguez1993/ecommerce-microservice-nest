@@ -58,7 +58,6 @@ export default class JWTService {
       } else {
         payload.invalid = true;
       }
-      console.log(error.message);
     }
     return payload;
   }

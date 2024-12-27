@@ -13,7 +13,6 @@ export class ShippingController{
 
   constructor(private readonly shippingService: ShippingService) { }
   
-
   @Post()
   @UseGuards(AuthenticationGuard)
   @ApiBearerAuth()
