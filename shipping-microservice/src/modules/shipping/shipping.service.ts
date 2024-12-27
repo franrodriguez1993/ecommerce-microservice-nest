@@ -3,8 +3,8 @@ import { ProviderService } from './provider.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Shippings } from '../../database/entities/shipping.entity';
 import { Repository } from 'typeorm';
-import { ReqCreateShippingDto } from '../../dto/reqCreateShipping.dto';
-import { ShippingStatus } from '../../enum/shipping-status.enum';
+import { ReqCreateShippingDto } from '../../shared/dto/reqCreateShipping.dto';
+import { ShippingStatus } from '../../shared/enum/shipping-status.enum';
 
 @Injectable()
 export class ShippingService {

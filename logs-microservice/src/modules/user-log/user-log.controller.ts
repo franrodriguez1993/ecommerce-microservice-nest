@@ -7,7 +7,7 @@ import { KafkaUserMessageDto } from "./user-log.dto";
 export class UserLogController{
   constructor(private readonly userLogService:UserLogService){}
   @EventPattern('user_action')
-    async handleUserAction( data: KafkaUserMessageDto) {
+  async handleUserAction(data: KafkaUserMessageDto) {
     return await this.userLogService.saveUserLog(data);
     }
 

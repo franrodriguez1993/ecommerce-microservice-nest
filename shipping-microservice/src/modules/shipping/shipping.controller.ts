@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { ShippingDto } from '../../dto/Shipping.dto';
+import { ShippingDto } from '../../shared/dto/Shipping.dto';
 import { ShippingService } from './shipping.service';
-import { ReqCreateShippingDto } from '../../dto/reqCreateShipping.dto';
-import { ShippingStatus } from '../../enum/shipping-status.enum';
+import { ReqCreateShippingDto } from '../../shared/dto/reqCreateShipping.dto';
+import { ShippingStatus } from '../../shared/enum/shipping-status.enum';
 
 @Controller()
 export class ShippingController {

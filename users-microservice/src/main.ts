@@ -7,11 +7,11 @@ async function bootstrap() {
     AppModule,
     {
       transport: Transport.TCP,
-      options: { host: '127.0.0.1', port: 3001 },
+      options: { host: '127.0.0.1', port: parseInt(process.env.PORT) },
     },
   );
 
   await app.listen();
-  console.log('Microservicio Usuarios corriendo en el puerto 3001');
+  console.log('Microservicio Usuarios corriendo en el puerto '+ process.env.PORT );
 }
 bootstrap();

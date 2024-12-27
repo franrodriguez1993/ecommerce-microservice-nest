@@ -6,8 +6,8 @@ export const OrdersMicroserviceProvider = {
     return ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 3003, 
+        host: process.env.HOST,
+        port: parseInt(process.env.ORDERS_MS_PORT),
       },
     });
   },

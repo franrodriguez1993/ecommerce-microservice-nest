@@ -4,9 +4,11 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { SharedModule } from '../../shared/services/shared.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     SharedModule,
     ClientsModule.register([
       {

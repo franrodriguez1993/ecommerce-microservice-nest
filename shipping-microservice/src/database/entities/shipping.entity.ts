@@ -8,7 +8,7 @@ import {
   BeforeInsert,
   BeforeUpdate,
 } from 'typeorm';
-import { ShippingStatus } from '../../enum/shipping-status.enum';
+import { ShippingStatus } from '../../shared/enum/shipping-status.enum';
 
 @Entity({
   name: 'shippings',

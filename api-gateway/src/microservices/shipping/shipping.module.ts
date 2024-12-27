@@ -3,9 +3,11 @@ import { ShippingMicroserviceProvider } from "./shipping.provider";
 import { ShippingController } from "./shipping.controller";
 import { ShippingService } from "./shipping.service";
 import { ClientsModule, Transport } from "@nestjs/microservices";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
+        ConfigModule.forRoot(),
         ClientsModule.register([
           {
             name: 'SHIPPING_LOG_SERVICE',

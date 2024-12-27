@@ -6,7 +6,6 @@ import { EntitiesModule } from './database/entities.module';
 import { OrderLogModule } from './modules/order-log/order-log.module';
 import { ShippingModule } from './modules/shipping-log/shipping.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({isGlobal:true}),

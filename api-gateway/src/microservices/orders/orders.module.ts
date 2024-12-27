@@ -3,10 +3,12 @@ import { OrdersMicroserviceProvider } from './orders.provider';
 import { OrdersService } from './orders.service';
 import { OrderController } from './orders.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ClientsModule.register([
       {
         name: 'ORDER_LOG_SERVICE',

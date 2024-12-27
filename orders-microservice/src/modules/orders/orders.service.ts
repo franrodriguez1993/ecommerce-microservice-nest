@@ -4,11 +4,11 @@ import { Repository } from 'typeorm';
 import { Orders } from '../../database/entities/orders.entity';
 import { OrdersProduct } from '../../database/entities/orders-product.entity';
 import { ProviderService } from './provider.service';
-import { ReqCreateOrderDto } from '../../dto/ReqCreateOrder.dto';
-import { OrderProductsDto } from '../../dto/OrderProducts.dto';
-import { ResProductDto } from '../../dto/ResProduct.dto';
-import { CartProduct } from '../../dto/CartProduct.dto';
-import { ResOrderDto } from '../../dto/ResOrder.dto';
+import { ReqCreateOrderDto } from './dto/ReqCreateOrder.dto';
+import { OrderProductsDto } from './dto/OrderProducts.dto';
+import { ResProductDto } from './dto/ResProduct.dto';
+import { CartProduct } from './dto/CartProduct.dto';
+import { ResOrderDto } from './dto/ResOrder.dto';
 
 @Injectable()
 export class OrdersService {

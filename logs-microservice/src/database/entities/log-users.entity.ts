@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   BeforeInsert,
 } from 'typeorm';
-import { UserActions } from '../../utils/enum/user-actions.enum';
+import { UserActions } from '../../shared/enum/user-actions.enum';
 
 
 @Entity({

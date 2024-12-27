@@ -8,7 +8,7 @@ async function bootstrap() {
     AppModule,
     {
       transport: Transport.TCP,
-      options: { host: '127.0.0.1', port: 3002 },
+      options: { host: '127.0.0.1', port: parseInt(process.env.PORT) },
     },
   );
 
@@ -25,6 +25,6 @@ async function bootstrap() {
   );
 
   await app.listen();
-  console.log('Microservicio Productos corriendo en el puerto 3002');
+  console.log('Microservicio Productos corriendo en el puerto ' + process.env.PORT);
 }
 bootstrap();

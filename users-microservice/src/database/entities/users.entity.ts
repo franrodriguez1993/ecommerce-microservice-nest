@@ -9,7 +9,7 @@ import {
   BeforeUpdate,
   OneToMany,
 } from 'typeorm';
-import { RoleUser } from '../../enum/RoleUser.enum';
+import { RoleUser } from '../../shared/enum/role-user.enum';
 import { Addresses } from './address.entity';
 
 @Entity({

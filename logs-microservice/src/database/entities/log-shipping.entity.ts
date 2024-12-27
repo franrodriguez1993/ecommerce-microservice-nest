@@ -6,7 +6,7 @@ import {
   CreateDateColumn,
   BeforeInsert,
 } from 'typeorm';
-import { ShippingStatus } from '../../utils/enum/shipping-status.enum';
+import { ShippingStatus } from '../../shared/enum/shipping-status.enum';
 
 @Entity({
   name: 'log_shippings',

@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { MessagePattern } from '@nestjs/microservices';
-import { ReqCreateOrderDto } from '../../dto/ReqCreateOrder.dto';
-import { ResOrderDto } from '../../dto/ResOrder.dto';
+import { ReqCreateOrderDto } from './dto/ReqCreateOrder.dto';
+import { ResOrderDto } from './dto/ResOrder.dto';
 
 @Controller('orders')
 export class OrdersController {

@@ -51,7 +51,7 @@ export class UsersService {
 
     // kafka action logs
     if (user) {
-      this.kafkaMessage({ action: UserActions.REGISTERED, userId: user.id });
+      this.kafkaMessage({ action: UserActions.LOGIN, userId: user.id });
     }
 
     return { user, accessToken, refreshToken };

@@ -6,8 +6,8 @@ export const ProductsMicroserviceProvider = {
     return ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 3002, // Puerto del microservicio de productos
+        host: process.env.HOST,
+        port: parseInt(process.env.PRODUCT_MS_PORT),
       },
     });
   },

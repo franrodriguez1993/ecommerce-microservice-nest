@@ -6,8 +6,8 @@ export const UsersMicroserviceProvider = {
     return ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 3001,
+        host: process.env.HOST,
+        port: parseInt(process.env.USER_MS_PORT),
       },
     });
   },
