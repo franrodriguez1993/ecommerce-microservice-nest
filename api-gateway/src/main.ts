@@ -9,12 +9,12 @@ async function bootstrap() {
 
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true, // Reject request with data that is not in the DTO
+      whitelist: true,
       forbidNonWhitelisted: true,
       disableErrorMessages:
         process.env.ENVIRONMENT == 'production' ? true : false,
       transformOptions: {
-        enableImplicitConversion: true, // Convertir Query params en numbers
+        enableImplicitConversion: true,
       },
     }),
   );
@@ -22,13 +22,13 @@ async function bootstrap() {
   // Configuración del microservicio Usuarios
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
-    options: { host: '127.0.0.1', port: 3001 },
+    options: { host: process.env.HOST, port: parseInt(process.env.USER_MS_PORT)},
   });
 
   // Configuración del microservicio Productos
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
-    options: { host: '127.0.0.1', port: 3002 },
+    options: { host: process.env.HOST, port: parseInt(process.env.PRODUCT_MS_PORT) },
   });
 
   const config = new DocumentBuilder()
@@ -40,8 +40,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  // await app.startAllMicroservices(); // Inicia los microservicios conectados
-  await app.listen(process.env.PORT); // API Gateway escucha en el puerto 3000
+  await app.listen(process.env.PORT); 
   console.log('API Gateway corriendo en http://localhost:3000');
 }
 bootstrap();

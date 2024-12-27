@@ -6,8 +6,8 @@ export const ShippingMicroserviceProvider = {
     return ClientProxyFactory.create({
       transport: Transport.TCP,
       options: {
-        host: '127.0.0.1',
-        port: 3005,
+        host: process.env.HOST,
+        port: parseInt(process.env.SHIPPING_MS_PORT),
       },
     });
   },

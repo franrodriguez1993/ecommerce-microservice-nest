@@ -15,7 +15,13 @@ import { SharedModule } from '../../shared/services/shared.module';
         options: {
           client: {
             clientId: 'users',
-            brokers: ['localhost:9092'],
+            brokers: [process.env.KAFKA_BROKER_1],
+          retry: {
+              retries: 5,
+              initialRetryTime: 30000,
+              factor: 1.5, 
+              multiplier: 1,
+        },
           },
           consumer: {
             groupId: 'users-consumer',

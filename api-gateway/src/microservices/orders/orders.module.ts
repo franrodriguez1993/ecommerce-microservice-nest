@@ -14,7 +14,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           client: {
             clientId: 'orders',
-            brokers: ['localhost:9093'],
+            brokers: [process.env.KAFKA_BROKER_2],
           retry: {
               retries: 5,
               initialRetryTime: 30000,
